@@ -1,0 +1,94 @@
+buildscript {
+    dependencies {
+        classpath 'org.flywaydb:flyway-database-postgresql:11.13.1'
+        classpath 'org.postgresql:postgresql:42.7.3'
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "org.jooq.jooq-codegen-gradle" version "3.19.26"
+    id "org.flywaydb.flyway" version "11.13.2"
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Web API for book finder'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.jooq:jooq-meta'
+    implementation 'org.jooq:jooq-codegen'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+    implementation 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll '-Xjsr305=strict'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+flyway {
+    url = System.getenv("POSTGRES_URL")
+    user = System.getenv("POSTGRES_USER")
+    password = System.getenv("POSTGRES_PASSWORD")
+}
+
+jooq {
+    configuration {
+
+        // Configure the database connection here
+        jdbc {
+            version = '1'
+            driver = "org.postgresql.Driver"
+            url = System.getenv("POSTGRES_URL")
+            user = System.getenv("POSTGRES_USER")
+            password = System.getenv("POSTGRES_PASSWORD")
+        }
+        generator {
+            database {
+                name = "org.jooq.meta.postgres.PostgresDatabase"
+                inputSchema = "public"
+                includes = ".*"
+            }
+            target {
+                packageName = "com.example.db"
+                directory = "src/main/kotlin"
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "src/main/kotlin"
+        }
+    }
+}

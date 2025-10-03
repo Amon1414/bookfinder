@@ -34,6 +34,6 @@ CREATE TABLE author_book (
 CREATE SEQUENCE book_id_seq START 1;
 CREATE SEQUENCE author_id_seq START 1;
 -- サンブルデータの登録
-INSERT INTO author (id, name, birth_date) VALUES(nextval('author_id_seq'), 'Yukio Mishima', '1994-11-27');
-INSERT INTO book (id, title, price, is_published) VALUES(nextval('book_id_seq'), 'aaaaai', 1000, TRUE);
+INSERT INTO author (id, name, birth_date) VALUES(nextval('author_id_seq'), 'Yukio Mishima', '1925-1-14');
+INSERT INTO book (id, title, price, is_published) VALUES(nextval('book_id_seq'), '潮騒', 1000, TRUE);
 INSERT INTO author_book (book_id, author_id) VALUES (1, 1);

@@ -24,9 +24,9 @@ class BookRepository(val dslContext: DSLContext) {
     /**
      * Select the books by author.
      *
-     * @param authorName author name.
+     * @param authorId author ID.
      */
-    fun getByAuthor(authorName: String): List<BookModel> {
+    fun getByAuthor(authorId: Int): List<BookModel> {
         try {
             return dslContext.select(
                 author.ID,
@@ -38,7 +38,7 @@ class BookRepository(val dslContext: DSLContext) {
             ).from(author)
                 .join(authorBook).on(author.ID.eq(authorBook.AUTHOR_ID))
                 .join(book).on(authorBook.BOOK_ID.eq(book.ID))
-                .where(author.NAME.eq(authorName))
+                .where(author.ID.eq(authorId))
                 .orderBy(book.ID)
                 .fetch().map { selected ->
                     BookModel(

@@ -4,6 +4,7 @@ import com.example.bookfinder.model.BookModel
 import com.example.bookfinder.service.BookService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -14,11 +15,11 @@ class BookController(private val bookService: BookService) {
     /**
      * Get the books by author.
      *
-     * @param keyword author name.
+     * @param authorId author ID.
      */
     @GetMapping("/book")
-    fun get(@RequestParam("keyword") @NotBlank(message = "{NotNull.book.id}") keyword: String): List<BookModel> {
-        return bookService.get(keyword)
+    fun get(@RequestParam("authorId") @NotNull(message = "{NotNull.author.id}") authorId: Int?): List<BookModel> {
+        return bookService.get(authorId!!)
     }
 
     /**

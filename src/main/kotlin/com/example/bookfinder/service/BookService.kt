@@ -12,10 +12,10 @@ class BookService(private val bookRepository: BookRepository) {
     /**
      * Get the books by author.
      *
-     * @param authorName author name.
+     * @param authorId author ID.
      */
-    fun get(authorName: String): List<BookModel> {
-        return bookRepository.getByAuthor(authorName)
+    fun get(authorId: Int): List<BookModel> {
+        return bookRepository.getByAuthor(authorId)
     }
 
     /**

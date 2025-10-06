@@ -11,6 +11,7 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.dao.DataAccessResourceFailureException
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Repository
@@ -90,6 +91,7 @@ class BookRepository(val dslContext: DSLContext) {
      *
      * @param bookModel book model to register.
      */
+    @Transactional
     fun register(bookModel: BookModel): BookModel {
         try {
             val book: Book = Book.BOOK
@@ -151,6 +153,7 @@ class BookRepository(val dslContext: DSLContext) {
      *
      * @param bookModel book model to update.
      */
+    @Transactional
     fun update(bookModel: BookModel): BookModel {
         try {
             val book: Book = Book.BOOK

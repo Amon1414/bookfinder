@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS author CASCADE;
+DROP SEQUENCE IF EXISTS author_id_seq CASCADE;
+
+CREATE SEQUENCE author_id_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE author (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  birth_date DATE NOT NULL,
+  created_date_time TIMESTAMP NOT NULL,
+  updated_date_time TIMESTAMP NOT NULL
+);

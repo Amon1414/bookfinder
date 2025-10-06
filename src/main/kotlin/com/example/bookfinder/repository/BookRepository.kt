@@ -16,9 +16,9 @@ import java.time.LocalDateTime
 @Repository
 class BookRepository(val dslContext: DSLContext) {
 
-    val book: Book = Book.BOOK;
-    val author: Author = Author.AUTHOR;
-    val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK;
+    val book: Book = Book.BOOK
+    val author: Author = Author.AUTHOR
+    val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK
 
     /**
      * Select the books by author.
@@ -92,8 +92,8 @@ class BookRepository(val dslContext: DSLContext) {
      */
     fun register(bookModel: BookModel): BookModel {
         try {
-            val book: Book = Book.BOOK;
-            val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK;
+            val book: Book = Book.BOOK
+            val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK
             val newBookId = dslContext.nextval(DSL.name("book_id_seq"))
             val insertedBook = dslContext.insertInto(
                 book,
@@ -153,8 +153,8 @@ class BookRepository(val dslContext: DSLContext) {
      */
     fun update(bookModel: BookModel): BookModel {
         try {
-            val book: Book = Book.BOOK;
-            val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK;
+            val book: Book = Book.BOOK
+            val authorBook: AuthorBook = AuthorBook.AUTHOR_BOOK
             val updatedBook = dslContext.update(book)
                 .set(book.TITLE, bookModel.vTitle)
                 .set(book.PRICE, bookModel.vPrice)

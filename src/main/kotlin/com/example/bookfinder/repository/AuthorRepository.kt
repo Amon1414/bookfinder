@@ -26,7 +26,7 @@ class AuthorRepository(val dslContext: DSLContext) {
                 author.CREATED_DATE_TIME,
                 author.UPDATED_DATE_TIME
             )
-                .values(newId.toInt(), authorModel.name, authorModel.birthDate, LocalDateTime.now(), LocalDateTime.now())
+                .values(newId.toInt(), authorModel.vName, authorModel.vBirthDate, LocalDateTime.now(), LocalDateTime.now())
                 .returning(author.ID, author.NAME, author.BIRTH_DATE)
                 .fetchOne()?: throw RuntimeException(ErrorMessages.DB_ACCESS_INSERT_FAILED)
             return AuthorModel(
@@ -45,10 +45,10 @@ class AuthorRepository(val dslContext: DSLContext) {
         try {
             val author: Author = Author.AUTHOR
             val updated = dslContext.update(author)
-                .set(author.NAME, authorModel.name)
-                .set(author.BIRTH_DATE, authorModel.birthDate)
+                .set(author.NAME, authorModel.vName)
+                .set(author.BIRTH_DATE, authorModel.vBirthDate)
                 .set(author.UPDATED_DATE_TIME, LocalDateTime.now())
-                .where(author.ID.eq(authorModel.id))
+                .where(author.ID.eq(authorModel.vId))
                 .returning(author.ID, author.NAME, author.BIRTH_DATE)
                 .fetchOne()?: throw RuntimeException(ErrorMessages.DB_ACCESS_UPDATE_FAILED)
             return AuthorModel(

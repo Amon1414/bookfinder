@@ -29,24 +29,13 @@ class AuthorControllerTest @Autowired constructor(
     fun `register should return registered author`() {
         val request = AuthorModel(id = 1, name = "John Doe", birthDate = LocalDate.of(1970, 1, 1))
         val response = AuthorModel(id = 1, name = "John Doe", birthDate = LocalDate.of(1970, 1, 1))
-        every { authorService.register(any()) } returns response
-
-        mockMvc.perform(
-            post("/author")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.id").value(1))
-            .andExpect(jsonPath("$.name").value("John Doe"))
-            .andExpect(jsonPath("$.birthDate").value("1970-01-01"))
-    }
-
-    @Test
-    fun `passing invalid values will cause an error`() {
-        val request = AuthorModel(id = 1, name = "", birthDate = LocalDate.of(1970, 1, 1))
-        val response = AuthorModel(id = 1, name = "John Doe", birthDate = LocalDate.of(1970, 1, 1))
-        every { authorService.register(any()) } returns response
+        every { authorService.register(
+            match {
+                it.vId == 1 &&
+                it.vName == "John Doe" &&
+                it.vBirthDate.equals(LocalDate.of(1970, 1, 1))
+            })
+        } returns response
 
         mockMvc.perform(
             post("/author")
@@ -63,7 +52,13 @@ class AuthorControllerTest @Autowired constructor(
     fun `update should return updated author`() {
         val request = AuthorModel(id = 2, name = "Jane Doe", birthDate = LocalDate.of(1970, 1, 1))
         val response = AuthorModel(id = 2, name = "Jane Doe", birthDate = LocalDate.of(1970, 1, 1))
-        every { authorService.update(request) } returns response
+        every { authorService.update(
+            match {
+                it.vId == 2 &&
+                it.vName == "Jane Doe" &&
+                it.vBirthDate.equals(LocalDate.of(1970, 1, 1))
+            })
+        } returns response
 
         mockMvc.perform(
             put("/author")

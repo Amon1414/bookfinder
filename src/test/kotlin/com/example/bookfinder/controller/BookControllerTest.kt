@@ -23,15 +23,15 @@ class BookControllerTest @Autowired constructor (
     lateinit var bookService: BookService
 
     @Test
-    fun `get should return books when keyword is valid`() {
+    fun `get should return books when request parameter is valid`() {
         val books = listOf(
             BookModel(id = 1, title = "Spring Boot", price = 2500, isPublished = true, authorIdList = listOf(1)),
             BookModel(id = 2, title = "Kotlin Master", price = 5000, isPublished = false, authorIdList = listOf(1))
         )
-        every { bookService.get("Josh") } returns books
+        every { bookService.get(1) } returns books
 
         mockMvc.perform(get("/book")
-            .param("keyword", "Josh"))
+            .param("authorId", "1"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$[0].id").value(1))
             .andExpect(jsonPath("$[0].title").value("Spring Boot"))
@@ -48,7 +48,8 @@ class BookControllerTest @Autowired constructor (
     @Test
     fun `register should return registered book`() {
         val request = BookModel(id = 1, title = "Spring Boot", price = 2500, isPublished = true, authorIdList = listOf(1))
-        every { bookService.register(any()) } returns request
+        val response = BookModel(id = 1, title = "Spring Boot", price = 2500, isPublished = true, authorIdList = listOf(1))
+        every { bookService.register(request) } returns response
 
         mockMvc.perform(post("/book")
             .contentType(MediaType.APPLICATION_JSON)
@@ -79,9 +80,9 @@ class BookControllerTest @Autowired constructor (
     }
 
     @Test
-    fun `get should return 400 when keyword is blank`() {
+    fun `get should return 400 when author id is null`() {
         mockMvc.perform(get("/book")
-            .param("keyword", ""))
+            .param("authorId", null))
             .andExpect(status().isBadRequest)
     }
 }
